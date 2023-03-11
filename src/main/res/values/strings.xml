@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">ASM</string>
+
+    <string name="help">Help</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="screenshot">Screenshot</string>
+    <string name="reset">Reset Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+
+    <!-- Strings related to Settings -->
+    <string name="pref_header_apriltag">AprilTag Processing Options</string>
+
+    <string name="pref_title_refine_edges">Enable refine edges</string>
+    <string name="pref_description_refine_edges">Refines edges for better estimates at the cost of computation time</string>
+
+    <string name="pref_title_refine_decode">Enable refine decode</string>
+    <string name="pref_description_refine_decode">Refines decoding</string>
+
+    <string name="pref_title_refine_pose">Enable refine pose</string>
+    <string name="pref_description_refine_pose">Refines poses</string>
+
+    <string name="pref_title_decimation">Image decimation</string>
+    <string-array name="pref_decimation_list_titles">
+        <item>1 (no decimation)</item>
+        <item>1.5</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>8 (default)</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+    </string-array>
+    <string-array name="pref_decimation_list_values">
+        <item>1</item>
+        <item>1.5</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+    </string-array>
+
+    <string name="pref_title_sigma">Gaussian blur (sigma, in pixels)</string>
+    <string name="pref_default_sigma">0.0</string>
+
+    <string name="pref_title_nthreads">Number of threads</string>
+    <string name="pref_default_nthreads">4</string>
+
+    <string name="pref_title_tag_family">Tag family</string>
+    <string-array name="pref_tag_family_list_titles">
+        <item>tag36h11 (recommended)</item>
+        <item>tag36h10</item>
+        <item>tag25h9</item>
+        <item>tag25h7</item>
+        <item>tag16h5</item>
+    </string-array>
+    <string-array name="pref_tag_family_list_values">
+        <item>tag36h11</item>
+        <item>tag36h10</item>
+        <item>tag25h9</item>
+        <item>tag25h7</item>
+        <item>tag16h5</item>
+    </string-array>
+</resources>
