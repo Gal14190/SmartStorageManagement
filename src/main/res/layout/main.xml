@@ -91,6 +91,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/panelPopup"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
@@ -115,6 +116,7 @@
                 android:text="N/A"
                 android:textColor="#FFF"
                 android:textSize="14sp" />
+
         </LinearLayout>
 
     </FrameLayout>

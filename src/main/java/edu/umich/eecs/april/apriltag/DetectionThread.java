@@ -1,5 +1,7 @@
 package edu.umich.eecs.april.apriltag;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -117,9 +119,9 @@ public class DetectionThread extends Thread {
     }
 
 
-    private void renderDetectionAll(ApriltagDetection detection, Canvas canvas) {
+    private void renderDetectionAll(ApriltagDetection detection, Canvas canvas, int background) {
         Paint fillPaint = new Paint();
-        fillPaint.setColor(Color.GREEN);
+        fillPaint.setColor(background);
         fillPaint.setAlpha(128);
         fillPaint.setStyle(Paint.Style.FILL);
 
@@ -246,20 +248,32 @@ public class DetectionThread extends Thread {
 
             for (ApriltagDetection detection : detections) {
                 if(this.model.getModeDetection() == Model.mode.ITEMS // detect all
-                        || (this.model.getModeDetection() == Model.mode.SPECIFIC_ITEM && this.model.getSpecificPartId() == detection.id) // detect specific part
-                        || (this.model.getModeDetection() == Model.mode.STORAGE && detection.id > 100)) {    // detect storage (id > 100)
+                        || (this.model.getModeDetection() == Model.mode.SPECIFIC_ITEM && (this.model.getSpecificPartId() == detection.id
+                                || this.model.getDataFetch().getItemById(this.model.getSpecificPartId()).getStorageId() == detection.id)) // detect specific part
+                        || (this.model.getModeDetection() == Model.mode.STORAGE && detection.id > 500)) {    // detect storage (id > 100)
 
-                    renderDetectionAll(detection, canvas);
+                    int fillColor = (detection.id < 500) ? Color.GREEN : Color.BLUE;
+                    renderDetectionAll(detection, canvas, fillColor);
 
                     // present the item name and the serial number if detect one or in the specific detection mode
                     // else present "Detect many items" text in color red
-                    if(this.model.getModeDetection() == Model.mode.SPECIFIC_ITEM || detections.size() == 1) {
-                        ItemModel dataItem = this.model.getDataFetch().getPartById(detection.id);
+                    if ((this.model.getModeDetection() == Model.mode.SPECIFIC_ITEM || detections.size() == 1) && detection.id < 500) {
+                        ItemModel dataItem = this.model.getDataFetch().getItemById(detection.id);
                         this.model.getPanelItemPopupModel().getItemNameTextView().setText(String.format("%d: %s", dataItem.getId(), dataItem.getName()));
                         this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);
 
                         this.model.getPanelItemPopupModel().getItemSerialNumberTextView().setText(dataItem.getSerialNumber());
-                    } else {
+                        this.model.getPanelItemPopupModel().getPanel().setOnClickListener(view -> {
+                            // TODO: Check whey its crush??
+                            Context context =  model.getPanelItemPopupModel().context;
+                            Intent intent = new Intent(context, ItemManageActivity.class);
+                            intent.putExtra("itemId", detection.id);
+                            context.startActivity(intent);
+                        });
+                    } else if(detection.id >= 500){
+                        this.model.getPanelItemPopupModel().getItemNameTextView().setText("Storage");
+                        this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);
+                    }else {
                         this.model.getPanelItemPopupModel().getItemNameTextView().setText("Detect many items");
                         this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.RED);
 

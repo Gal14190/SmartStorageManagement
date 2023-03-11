@@ -12,9 +12,9 @@ public class Model {
     public Model() {
         this.mModeDetection = mode.SPECIFIC_ITEM;
         this.mSpecificPartId = 1;
-
-        this.panelItemPopupModel = new PanelItemPopupModel();
     }
+
+    public static Model getInstance() { return new Model();}
 
     public DataFetchThread getDataFetch() {
         return data;

@@ -1,11 +1,14 @@
 package edu.umich.eecs.april.apriltag;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +24,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -35,11 +39,15 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
     private CameraPreviewThread mCameraPreviewThread;
     private DataFetchThread dataFetchThread;
 
+    private ImageButton detectSpecificItemsBtn;
+    private ImageButton detectAllItemsBtn;
 
     private Model model;
 
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 77;
+    private static final int PERMISSIONS_REQUEST_CAMERA = 77;
+    private static final int PERMISSION_REQUEST_INTERNET = 1;
     private int has_camera_permissions = 0;
+    private int has_internet_permissions = 0;
 
     private void verifyPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -59,6 +67,14 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            Log.i("Network", "connect");
+        } else {
+            Log.i("Network", "error");
+        }
+
         // Add toolbar/actionbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -67,24 +83,33 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Model
-        model = new Model();
-        model.setPanelItemPopupModel(new PanelItemPopupModel());
+        model = Model.getInstance();
+        model.setPanelItemPopupModel(new PanelItemPopupModel(this));
 
         // Mode detection buttons
-        ImageButton detectSpecificItemsBtn = (ImageButton) findViewById(R.id.detectSpecificItems_btn);
-        ImageButton detectAllItemsBtn = (ImageButton) findViewById(R.id.detectAllItems_btn);
+        detectSpecificItemsBtn = (ImageButton) findViewById(R.id.detectSpecificItems_btn);
+        detectAllItemsBtn = (ImageButton) findViewById(R.id.detectAllItems_btn);
         detectSpecificItemsBtn.setOnClickListener(view -> {
             model.setModeDetection(Model.mode.SPECIFIC_ITEM);
+            modeSelectStyle(Model.mode.SPECIFIC_ITEM);
 
-            detectAllItemsBtn.setBackgroundColor(Color.GRAY);
-            detectSpecificItemsBtn.setBackgroundColor(Color.WHITE);
+            Intent intent = new Intent(this, ListItemsActivity.class);
+            this.startActivity(intent);
         });
         detectAllItemsBtn.setOnClickListener(view -> {
             model.setModeDetection(Model.mode.ITEMS);
-
-            detectAllItemsBtn.setBackgroundColor(Color.WHITE);
-            detectSpecificItemsBtn.setBackgroundColor(Color.GRAY);
+            modeSelectStyle(Model.mode.ITEMS);
         });
+        // set default mode
+        model.setModeDetection(Model.mode.ITEMS);
+        modeSelectStyle(Model.mode.ITEMS);
+
+        // get id from list item activity
+        model.setSpecificPartId(getIntent().getIntExtra("itemID", -1));
+        if(model.getSpecificPartId() != -1) {
+            model.setModeDetection(Model.mode.SPECIFIC_ITEM);
+            modeSelectStyle(Model.mode.SPECIFIC_ITEM);
+        }
 
         // Ensure we have permission to use the camera (Permission Requesting for Android 6.0/SDK 23 and higher)
         if (ContextCompat.checkSelfPermission(this,
@@ -92,9 +117,16 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
             // Assume user knows enough about the app to know why we need the camera, just ask for permission
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
+                    PERMISSIONS_REQUEST_CAMERA);
         } else {
             this.has_camera_permissions = 1;
+        }
+
+        // Ensure we have permission to use internet connection
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, PERMISSION_REQUEST_INTERNET);
+        } else {
+            this.has_internet_permissions = 1;
         }
     }
 
@@ -168,6 +200,8 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         // Start fetching data process on a separate thread
         TextView itemNameTextView = (TextView) findViewById(R.id.itemName);
         TextView itemSerialNumberTextView = (TextView) findViewById(R.id.itemSerialNumber);
+        LinearLayout itemPanelPopup = (LinearLayout) findViewById(R.id.panelPopup);
+        model.getPanelItemPopupModel().setPanel(itemPanelPopup);
         model.getPanelItemPopupModel().setItemNameTextView(itemNameTextView);
         model.getPanelItemPopupModel().setItemSerialNumberTextView(itemSerialNumberTextView);
 
@@ -233,7 +267,7 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_CAMERA: {
+            case PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i(TAG, "App GRANTED camera permissions");
@@ -248,8 +282,34 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
                     Log.i(TAG, "App DENIED camera permissions");
                     this.has_camera_permissions = 0;
                 }
-                return;
+                break;
             }
+
+            case PERMISSION_REQUEST_INTERNET: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "App GRANTED internet connection permissions");
+
+                    // Set flag
+                    this.has_camera_permissions = 1;
+                } else {
+                    Log.i(TAG, "App DENIED internet connection permissions");
+                    this.has_camera_permissions = 0;
+                }
+            }
+            break;
+        }
+    }
+
+    private void modeSelectStyle(Model.mode modeSelect) {
+        switch (modeSelect) {
+            case ITEMS:
+                detectAllItemsBtn.setBackgroundColor(Color.WHITE);
+                detectSpecificItemsBtn.setBackgroundColor(Color.GRAY);
+                break;
+            case SPECIFIC_ITEM:
+                detectAllItemsBtn.setBackgroundColor(Color.GRAY);
+                detectSpecificItemsBtn.setBackgroundColor(Color.WHITE);
+                break;
         }
     }
 }
