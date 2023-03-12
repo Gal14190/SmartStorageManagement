@@ -11,12 +11,17 @@ public class ItemManageActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
         setContentView(R.layout.item_manage_activity);
 
-        Model model = Model.getInstance();
+        int id = (int)getIntent().getIntExtra("item.id", -1);
+        String name = (String) getIntent().getStringExtra("item.name");
+        int amount = (int) getIntent().getIntExtra("item.amount", -1);
+        String description = (String) getIntent().getStringExtra("item.description");
+        String serialNumber = (String) getIntent().getStringExtra("item.serialNumber");
 
-        int itemId = getIntent().getIntExtra("itemId", -1);
-
-        if(itemId != -1) {
-            ((TextView) findViewById(R.id.itemNameManage)).setText(model.getDataFetch().getItemById(itemId).getName());
+        if(id != -1) {
+            ((TextView) findViewById(R.id.itemNameManage)).setText(name);
+            ((TextView) findViewById(R.id.itemSerialNumberManage)).setText(serialNumber);
+            ((TextView) findViewById(R.id.itemDescriptionManage)).setText(description);
+            ((TextView) findViewById(R.id.itemAmountManage)).setText("" + amount);
         }
     }
 }

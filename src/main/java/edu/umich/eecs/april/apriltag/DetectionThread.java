@@ -1,7 +1,5 @@
 package edu.umich.eecs.april.apriltag;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -244,6 +242,8 @@ public class DetectionThread extends Thread {
                 this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);
 
                 this.model.getPanelItemPopupModel().getItemSerialNumberTextView().setText("");
+
+                this.model.setDetected(false);  // cancel detected
             }
 
             for (ApriltagDetection detection : detections) {
@@ -263,21 +263,21 @@ public class DetectionThread extends Thread {
                         this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);
 
                         this.model.getPanelItemPopupModel().getItemSerialNumberTextView().setText(dataItem.getSerialNumber());
-                        this.model.getPanelItemPopupModel().getPanel().setOnClickListener(view -> {
-                            // TODO: Check whey its crush??
-                            Context context =  model.getPanelItemPopupModel().context;
-                            Intent intent = new Intent(context, ItemManageActivity.class);
-                            intent.putExtra("itemId", detection.id);
-                            context.startActivity(intent);
-                        });
+
+                        this.model.setDetected(true);   // is detected
+                        this.model.setItemIdDetected(detection.id);
                     } else if(detection.id >= 500){
                         this.model.getPanelItemPopupModel().getItemNameTextView().setText("Storage");
                         this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);
+
+                        this.model.setDetected(false); // cancel detected
                     }else {
                         this.model.getPanelItemPopupModel().getItemNameTextView().setText("Detect many items");
                         this.model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.RED);
 
                         this.model.getPanelItemPopupModel().getItemSerialNumberTextView().setText("");
+
+                        this.model.setDetected(false);// cancel detected
                     }
                 }
             }

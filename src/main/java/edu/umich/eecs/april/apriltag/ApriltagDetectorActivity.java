@@ -84,7 +84,7 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
 
         // Model
         model = Model.getInstance();
-        model.setPanelItemPopupModel(new PanelItemPopupModel(this));
+        model.setPanelItemPopupModel(new PanelItemPopupModel());
 
         // Mode detection buttons
         detectSpecificItemsBtn = (ImageButton) findViewById(R.id.detectSpecificItems_btn);
@@ -110,6 +110,15 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
             model.setModeDetection(Model.mode.SPECIFIC_ITEM);
             modeSelectStyle(Model.mode.SPECIFIC_ITEM);
         }
+
+        ((LinearLayout) findViewById(R.id.panelPopup)).setOnClickListener(view -> {
+            // TODO: Check whey its crush??
+            if(model.isDetected()) {
+                Intent intent = new Intent(this, ItemManageActivity.class);
+                model.sendItemDetail(intent);
+                this.startActivity(intent);
+            }
+        });
 
         // Ensure we have permission to use the camera (Permission Requesting for Android 6.0/SDK 23 and higher)
         if (ContextCompat.checkSelfPermission(this,
@@ -200,8 +209,7 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         // Start fetching data process on a separate thread
         TextView itemNameTextView = (TextView) findViewById(R.id.itemName);
         TextView itemSerialNumberTextView = (TextView) findViewById(R.id.itemSerialNumber);
-        LinearLayout itemPanelPopup = (LinearLayout) findViewById(R.id.panelPopup);
-        model.getPanelItemPopupModel().setPanel(itemPanelPopup);
+
         model.getPanelItemPopupModel().setItemNameTextView(itemNameTextView);
         model.getPanelItemPopupModel().setItemSerialNumberTextView(itemSerialNumberTextView);
 
