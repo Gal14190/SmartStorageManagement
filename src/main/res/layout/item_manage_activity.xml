@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:layout_margin="15dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,6 +16,8 @@
             android:layout_width="170dp"
             android:layout_height="100dp"
             android:layout_weight="1"
+            android:background="#000000"
+            android:padding="1dp"
             app:srcCompat="@drawable/ic_info_black_24dp" />
 
         <LinearLayout
@@ -29,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="N/A"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -55,13 +58,20 @@
             android:layout_marginTop="15dp"
             android:layout_weight="1"
             android:text="Amount: " />
+
         <TextView
             android:id="@+id/itemAmountManage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:text="N/A" />
+
+        <TextView
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="" />
     </LinearLayout>
 
     <TextView
@@ -70,12 +80,41 @@
         android:layout_margin="15dp"
         android:text="description:" />
 
-    <TextView
-        android:id="@+id/itemDescriptionManage"
+    <FrameLayout
+        android:background="#DDD"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <TextView
+            android:id="@+id/itemDescriptionManage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="N/A" />
+    </FrameLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:text="N/A" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/decBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="#AAA"
+            android:text="DECREASE" />
+
+        <Button
+            android:id="@+id/incBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="#00FF00"
+            android:text="INCREASE" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -5,18 +5,18 @@ import android.content.Intent;
 public class Model {
     public enum mode { STORAGE, ITEMS, SPECIFIC_ITEM }
 
-    private mode mModeDetection;
-    private int mSpecificPartId;
+    private static mode mModeDetection;
+    private static int mSpecificPartId;
 
     private PanelItemPopupModel panelItemPopupModel;
-    private DataFetchThread data;
+    private static DataFetchThread data;
 
-    private int itemIdDetected;
-    private boolean isDetected;
+    private static int itemIdDetected;
+    private static boolean isDetected;
 
     public Model() {
-        this.mModeDetection = mode.SPECIFIC_ITEM;
-        this.mSpecificPartId = 1;
+        mModeDetection = mode.SPECIFIC_ITEM;
+        mSpecificPartId = 1;
     }
 
     public Intent sendItemDetail(Intent intent) {
@@ -32,28 +32,28 @@ public class Model {
 
     public static Model getInstance() { return new Model();}
 
-    public int getItemIdDetected() {
+    public static int getItemIdDetected() {
         return itemIdDetected;
     }
 
-    public void setItemIdDetected(int itemIdDetected) {
-        this.itemIdDetected = itemIdDetected;
+    public static void setItemIdDetected(int itemIdDetected) {
+        itemIdDetected = itemIdDetected;
     }
 
-    public boolean isDetected() {
+    public static boolean isDetected() {
         return isDetected;
     }
 
-    public void setDetected(boolean detected) {
+    public static void setDetected(boolean detected) {
         isDetected = detected;
     }
 
-    public DataFetchThread getDataFetch() {
+    public static DataFetchThread getDataFetch() {
         return data;
     }
 
-    public void setDataFetch(DataFetchThread data) {
-        this.data = data;
+    public static void setDataFetch(DataFetchThread data) {
+        data = data;
     }
 
     public PanelItemPopupModel getPanelItemPopupModel() {
@@ -64,19 +64,19 @@ public class Model {
         this.panelItemPopupModel = panelItemPopupModel;
     }
 
-    public mode getModeDetection() {
+    public static mode getModeDetection() {
         return mModeDetection;
     }
 
-    public void setModeDetection(mode modeDetection) {
-        this.mModeDetection = modeDetection;
+    public static void setModeDetection(mode modeDetection) {
+        mModeDetection = modeDetection;
     }
 
-    public int getSpecificPartId() {
+    public static int getSpecificPartId() {
         return mSpecificPartId;
     }
 
-    public void setSpecificPartId(int specificPartId) {
-        this.mSpecificPartId = specificPartId;
+    public static void setSpecificPartId(int specificPartId) {
+        mSpecificPartId = specificPartId;
     }
 }

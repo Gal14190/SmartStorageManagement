@@ -9,9 +9,11 @@
     <ImageView
         android:id="@+id/itemImageList"
         android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_weight="1"
+        android:layout_height="80dp"
         android:layout_margin="6dp"
+        android:layout_weight="1"
+        android:background="#000000"
+        android:padding="1dp"
         tools:srcCompat="@drawable/app_logo" />
 
     <LinearLayout
