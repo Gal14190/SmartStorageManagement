@@ -2,7 +2,7 @@ package edu.umich.eecs.april.apriltag;
 
 import android.util.Log;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class DataFetchThread extends Thread {
     private DataSet mDataSet;
@@ -39,11 +39,11 @@ public class DataFetchThread extends Thread {
 
     }
 
-    public Vector<ItemModel> getAllItems() {
+    public ArrayList<ItemModel> getAllItems() {
         return this.mDataSet.getItem();
     }
 
-    public Vector<StorageModel> getAllStorage() {
+    public ArrayList<StorageModel> getAllStorage() {
         return this.mDataSet.getStorage();
     }
 
@@ -58,39 +58,39 @@ public class DataFetchThread extends Thread {
 }
 
 class DataSet {
-    private Vector<ItemModel> item;
-    private Vector<StorageModel> storage;
-    private Vector<MemberModel> member;
+    private ArrayList<ItemModel> item;
+    private ArrayList<StorageModel> storage;
+    private ArrayList<MemberModel> member;
 
     public DataSet() {
-        item = new Vector<>();
-        storage = new Vector<>();
-        member = new Vector<>();
+        item = new ArrayList<>();
+        storage = new ArrayList<>();
+        member = new ArrayList<>();
     }
 
     public static DataSet getInstance() {return new DataSet();}
 
-    public Vector<ItemModel> getItem() {
+    public ArrayList<ItemModel> getItem() {
         return item;
     }
 
-    public void setItem(Vector<ItemModel> item) {
+    public void setItem(ArrayList<ItemModel> item) {
         this.item = item;
     }
 
-    public Vector<StorageModel> getStorage() {
+    public ArrayList<StorageModel> getStorage() {
         return storage;
     }
 
-    public void setStorage(Vector<StorageModel> storage) {
+    public void setStorage(ArrayList<StorageModel> storage) {
         this.storage = storage;
     }
 
-    public Vector<MemberModel> getMember() {
+    public ArrayList<MemberModel> getMember() {
         return member;
     }
 
-    public void setMember(Vector<MemberModel> member) {
+    public void setMember(ArrayList<MemberModel> member) {
         this.member = member;
     }
 }

@@ -16,14 +16,13 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class ListItemsActivity extends AppCompatActivity {
     private final int STORAGE_BEGIN_NUMBER = 500;
     private final int NUMBER_OF_STORAGE = 20;
 
     private ListView listView;
-    private Vector<ItemModel> items;
+    private ArrayList<ItemModel> items;
     private ArrayList<String> storageSelected = new ArrayList<>();
 
     @Override

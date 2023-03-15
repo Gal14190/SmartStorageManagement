@@ -90,30 +90,29 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         detectSpecificItemsBtn = (ImageButton) findViewById(R.id.detectSpecificItems_btn);
         detectAllItemsBtn = (ImageButton) findViewById(R.id.detectAllItems_btn);
         detectSpecificItemsBtn.setOnClickListener(view -> {
-            model.setModeDetection(Model.mode.SPECIFIC_ITEM);
+            Model.setModeDetection(Model.mode.SPECIFIC_ITEM);
             modeSelectStyle(Model.mode.SPECIFIC_ITEM);
 
             Intent intent = new Intent(this, ListItemsActivity.class);
             this.startActivity(intent);
         });
         detectAllItemsBtn.setOnClickListener(view -> {
-            model.setModeDetection(Model.mode.ITEMS);
+            Model.setModeDetection(Model.mode.ITEMS);
             modeSelectStyle(Model.mode.ITEMS);
         });
         // set default mode
-        model.setModeDetection(Model.mode.ITEMS);
+        Model.setModeDetection(Model.mode.ITEMS);
         modeSelectStyle(Model.mode.ITEMS);
 
         // get id from list item activity
-        model.setSpecificPartId(getIntent().getIntExtra("itemID", -1));
-        if(model.getSpecificPartId() != -1) {
-            model.setModeDetection(Model.mode.SPECIFIC_ITEM);
+        Model.setSpecificPartId(getIntent().getIntExtra("itemID", -1));
+        if(Model.getSpecificPartId() != -1) {
+            Model.setModeDetection(Model.mode.SPECIFIC_ITEM);
             modeSelectStyle(Model.mode.SPECIFIC_ITEM);
         }
 
         ((LinearLayout) findViewById(R.id.panelPopup)).setOnClickListener(view -> {
-            // TODO: Check whey its crush??
-            if(model.isDetected()) {
+            if(Model.isDetected()) {
                 Intent intent = new Intent(this, ItemManageActivity.class);
                 model.sendItemDetail(intent);
                 this.startActivity(intent);

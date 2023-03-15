@@ -9,10 +9,10 @@ public class Model {
     private static int mSpecificPartId;
 
     private PanelItemPopupModel panelItemPopupModel;
-    private static DataFetchThread data;
+    private static DataFetchThread mData;
 
-    private static int itemIdDetected;
-    private static boolean isDetected;
+    private static int mItemIdDetected;
+    private static boolean mIsDetected;
 
     public Model() {
         mModeDetection = mode.SPECIFIC_ITEM;
@@ -20,7 +20,7 @@ public class Model {
     }
 
     public Intent sendItemDetail(Intent intent) {
-        ItemModel item = data.getItemById(itemIdDetected);
+        ItemModel item = mData.getItemById(mItemIdDetected);
         intent.putExtra("item.id", item.getId());
         intent.putExtra("item.name", item.getName());
         intent.putExtra("item.amount", item.getAmount());
@@ -33,27 +33,27 @@ public class Model {
     public static Model getInstance() { return new Model();}
 
     public static int getItemIdDetected() {
-        return itemIdDetected;
+        return mItemIdDetected;
     }
 
     public static void setItemIdDetected(int itemIdDetected) {
-        itemIdDetected = itemIdDetected;
+        mItemIdDetected = itemIdDetected;
     }
 
     public static boolean isDetected() {
-        return isDetected;
+        return mIsDetected;
     }
 
     public static void setDetected(boolean detected) {
-        isDetected = detected;
+        mIsDetected = detected;
     }
 
     public static DataFetchThread getDataFetch() {
-        return data;
+        return mData;
     }
 
     public static void setDataFetch(DataFetchThread data) {
-        data = data;
+        mData = data;
     }
 
     public PanelItemPopupModel getPanelItemPopupModel() {
