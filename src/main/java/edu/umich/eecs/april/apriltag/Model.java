@@ -14,6 +14,8 @@ public class Model {
     private static int mItemIdDetected;
     private static boolean mIsDetected;
 
+    private static String userName;
+
     public Model() {
         mModeDetection = mode.SPECIFIC_ITEM;
         mSpecificPartId = 1;
@@ -78,5 +80,13 @@ public class Model {
 
     public static void setSpecificPartId(int specificPartId) {
         mSpecificPartId = specificPartId;
+    }
+
+    public static String getUserName() {
+        return userName;
+    }
+
+    public static void setUserName(String userName) {
+        Model.userName = userName;
     }
 }
