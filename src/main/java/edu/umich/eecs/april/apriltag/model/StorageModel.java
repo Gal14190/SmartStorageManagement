@@ -1,4 +1,4 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.model;
 
 public class StorageModel {
     private int id;

@@ -1,10 +1,18 @@
+buildscript {
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
 plugins {
     id 'com.android.application' version '7.2.1'
+//    id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
+    id 'com.google.gms.google-services'
+
 }
 ext {
     sdkVersion = 24
+    agp_version = '7.2.2'
 }
-
 
 android {
     compileSdk 33
@@ -12,10 +20,11 @@ android {
 
     defaultConfig {
         applicationId "edu.umich.eecs.april.apriltag"
-        minSdkVersion 14
-        targetSdkVersion 32
+        minSdkVersion 21
+        targetSdkVersion 33
         versionCode 12
         versionName "1.2"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -29,16 +38,29 @@ android {
             path "CMakeLists.txt"
         }
     }
-
+    buildToolsVersion '33.0.2'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.13.2'
     //noinspection GradleCompatible
-    implementation 'com.android.support:appcompat-v7:24.2.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     //noinspection GradleCompatible
-    implementation 'com.android.support:support-v4:24.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.0"
+    implementation 'com.google.firebase:firebase-firestore:24.4.4'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
+            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+        }
+    }
+
 //    implementation 'com.github.bumptech.glide:glide:4.8.0'
 //    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 }

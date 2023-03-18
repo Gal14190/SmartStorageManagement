@@ -1,4 +1,4 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.helper;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -1,4 +1,4 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.model;
 
 import android.content.Context;
 import android.widget.TextView;

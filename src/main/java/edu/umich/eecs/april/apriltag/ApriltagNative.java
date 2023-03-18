@@ -1,9 +1,10 @@
 package edu.umich.eecs.april.apriltag;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.util.ArrayList;
+
+import edu.umich.eecs.april.apriltag.model.ApriltagDetection;
 
 /**
  * Interface to native C AprilTag library.

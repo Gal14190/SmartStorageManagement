@@ -1,4 +1,4 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.thread;
 
 import android.hardware.Camera;
 import android.hardware.camera2.CameraDevice;
@@ -114,7 +114,7 @@ public class CameraPreviewThread extends Thread {
         }
     }
 
-    protected void initialize() {
+    public void initialize() {
         int camidx = 0;
         Camera.CameraInfo info = new Camera.CameraInfo();
         for (int i = 0; i < Camera.getNumberOfCameras(); i += 1) {

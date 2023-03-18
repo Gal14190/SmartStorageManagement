@@ -4,7 +4,21 @@ pluginManagement {
         google()
         mavenCentral()
     }
+
 }
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    dependencies {
+//        classpath "com.android.tools.build:gradle:4.2.2"
+        classpath 'com.google.gms:google-services:4.3.15'
+    }
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,5 +26,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "AprilTag Detector"
+rootProject.name = "Afeka Smart Management"
 include ':app'

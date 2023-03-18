@@ -1,35 +1,50 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.model;
 
-import android.content.Intent;
+import android.content.Context;
 
-public class Model {
+import androidx.lifecycle.ViewModel;
+
+import edu.umich.eecs.april.apriltag.thread.DataFetchThread;
+
+public class Model extends ViewModel {
     public enum mode { STORAGE, ITEMS, SPECIFIC_ITEM }
+
+    private static Context mainContext;
 
     private static mode mModeDetection;
     private static int mSpecificPartId;
 
-    private PanelItemPopupModel panelItemPopupModel;
-    private static DataFetchThread mData;
+    private static PanelItemPopupModel mPanelItemPopupModel;
+    public static DataFetchThread mData;
 
     private static int mItemIdDetected;
     private static boolean mIsDetected;
 
     private static String userName;
 
-    public Model() {
+    public static void init() {
         mModeDetection = mode.SPECIFIC_ITEM;
         mSpecificPartId = 1;
     }
 
-    public Intent sendItemDetail(Intent intent) {
-        ItemModel item = mData.getItemById(mItemIdDetected);
-        intent.putExtra("item.id", item.getId());
-        intent.putExtra("item.name", item.getName());
-        intent.putExtra("item.amount", item.getAmount());
-        intent.putExtra("item.description", item.getDescription());
-        intent.putExtra("item.serialNumber", item.getSerialNumber());
+    public static Context getMainContext() {
+        return mainContext;
+    }
 
-        return intent;
+    public static void setMainContext(Context mainContext) {
+        Model.mainContext = mainContext;
+    }
+
+    public static void addItem(ItemModel item) {
+        mData.addItem(item);
+    }
+
+    public static void addStorage(StorageModel storage) {
+        mData.addStorage(storage);
+    }
+
+    public static void addTrack(TrackModel track) {
+        mData.addTrack(track);
     }
 
     public static Model getInstance() { return new Model();}
@@ -58,12 +73,12 @@ public class Model {
         mData = data;
     }
 
-    public PanelItemPopupModel getPanelItemPopupModel() {
-        return panelItemPopupModel;
+    public static PanelItemPopupModel getPanelItemPopupModel() {
+        return mPanelItemPopupModel;
     }
 
-    public void setPanelItemPopupModel(PanelItemPopupModel panelItemPopupModel) {
-        this.panelItemPopupModel = panelItemPopupModel;
+    public static void setPanelItemPopupModel(PanelItemPopupModel panelItemPopupModel) {
+        mPanelItemPopupModel = panelItemPopupModel;
     }
 
     public static mode getModeDetection() {

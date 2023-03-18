@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "567453331762",
+    "project_id": "assm-14a68",
+    "storage_bucket": "assm-14a68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567453331762:android:248e35e9e4b31384c3a72b",
+        "android_client_info": {
+          "package_name": "edu.umich.eecs.april.apriltag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567453331762-eohgf4s6nnpqsge4dk9hbpkr8jqrneej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxf_UG34i2UvXL6noCrs7ybFgCmYzFAcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567453331762-eohgf4s6nnpqsge4dk9hbpkr8jqrneej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

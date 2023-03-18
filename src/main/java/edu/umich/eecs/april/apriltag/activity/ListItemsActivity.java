@@ -1,10 +1,10 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,12 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+
+import edu.umich.eecs.april.apriltag.R;
+import edu.umich.eecs.april.apriltag.helper.DownloadImageAsync;
+import edu.umich.eecs.april.apriltag.model.ItemModel;
+import edu.umich.eecs.april.apriltag.model.Model;
+import edu.umich.eecs.april.apriltag.model.StorageModel;
 
 public class ListItemsActivity extends AppCompatActivity {
     private final int STORAGE_BEGIN_NUMBER = 500;
@@ -32,17 +38,14 @@ public class ListItemsActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_scale, R.anim.slide_down);
         setContentView(R.layout.list_items_activity);
 
-        Model model = Model.getInstance();
-        model.setDataFetch(new DataFetchThread(model));
-
         listView = (ListView) findViewById(R.id.list_items);
-        items = model.getDataFetch().getAllItems();
+        items = Model.getDataFetch().getAllItems();
         reListView();
 
         // STORAGE LIST INIT
         LinearLayout storageList_layout = (LinearLayout) findViewById(R.id.storageList);
-        for (int storageNum = STORAGE_BEGIN_NUMBER; storageNum <= STORAGE_BEGIN_NUMBER + NUMBER_OF_STORAGE; storageNum++) {
-            addButton(storageList_layout, storageNum);
+        for (StorageModel storage:Model.getDataFetch().getAllStorage()) {
+            addButton(storageList_layout, storage.getId());
         }
     }
 

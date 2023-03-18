@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="Add new item" />
+
+    <EditText
+        android:id="@+id/itemNameInput"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Name" />
+
+    <EditText
+        android:id="@+id/itemSerialNumberInput"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Serial Number" />
+
+    <EditText
+        android:id="@+id/itemAmountInput"
+        android:layout_margin="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Amount" />
+
+    <EditText
+        android:id="@+id/itemStorageIdInput"
+        android:layout_margin="20dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:hint="Storage" />
+
+    <EditText
+        android:id="@+id/itemDescriptionInput"
+        android:layout_margin="20dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:hint="Description" />
+
+    <Button
+        android:id="@+id/itemImageBtn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Select Image" />
+
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Add" />
+
+</LinearLayout>

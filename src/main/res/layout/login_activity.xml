@@ -23,7 +23,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:inputType="textPersonName"
-        android:hint="User Name" />
+        android:hint="User Name"
+        android:text="Gal Ashkenazi"/>
 
     <Button
         android:id="@+id/nextButton"

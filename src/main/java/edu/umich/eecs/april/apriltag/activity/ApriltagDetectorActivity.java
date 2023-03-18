@@ -1,4 +1,4 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -11,10 +11,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -27,6 +23,20 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
+
+import edu.umich.eecs.april.apriltag.ApriltagNative;
+import edu.umich.eecs.april.apriltag.R;
+import edu.umich.eecs.april.apriltag.model.Model;
+import edu.umich.eecs.april.apriltag.model.PanelItemPopupModel;
+import edu.umich.eecs.april.apriltag.thread.CameraPreviewThread;
+import edu.umich.eecs.april.apriltag.thread.DetectionThread;
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -37,12 +47,11 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
     private static final String TAG = "AprilTag";
     private DetectionThread mDetectionThread;
     private CameraPreviewThread mCameraPreviewThread;
-    private DataFetchThread dataFetchThread;
+
+    private Model model;
 
     private ImageButton detectSpecificItemsBtn;
     private ImageButton detectAllItemsBtn;
-
-    private Model model;
 
     private static final int PERMISSIONS_REQUEST_CAMERA = 77;
     private static final int PERMISSION_REQUEST_INTERNET = 1;
@@ -83,8 +92,8 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Model
-        model = Model.getInstance();
-        model.setPanelItemPopupModel(new PanelItemPopupModel());
+        Model.init();
+        Model.setPanelItemPopupModel(new PanelItemPopupModel());
 
         // Mode detection buttons
         detectSpecificItemsBtn = (ImageButton) findViewById(R.id.detectSpecificItems_btn);
@@ -114,7 +123,9 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         ((LinearLayout) findViewById(R.id.panelPopup)).setOnClickListener(view -> {
             if(Model.isDetected()) {
                 Intent intent = new Intent(this, ItemManageActivity.class);
-                model.sendItemDetail(intent);
+                this.startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, AddItemActivity.class);
                 this.startActivity(intent);
             }
         });
@@ -209,18 +220,16 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         TextView itemNameTextView = (TextView) findViewById(R.id.itemName);
         TextView itemSerialNumberTextView = (TextView) findViewById(R.id.itemSerialNumber);
 
-        model.getPanelItemPopupModel().setItemNameTextView(itemNameTextView);
-        model.getPanelItemPopupModel().setItemSerialNumberTextView(itemSerialNumberTextView);
+        Model.getPanelItemPopupModel().setItemNameTextView(itemNameTextView);
+        Model.getPanelItemPopupModel().setItemSerialNumberTextView(itemSerialNumberTextView);
 
-        dataFetchThread = new DataFetchThread(model);
-        model.setDataFetch(dataFetchThread);
-        dataFetchThread.start();
+        model = new ViewModelProvider((ViewModelStoreOwner) this).get(Model.class);
 
         // Start the detection process on a separate thread
         TextureView detectionSurface = (TextureView) findViewById(R.id.tagView);
         TextView detectionFpsTextView = (TextView) findViewById(R.id.detectionFpsTextView);
         stylizeText(detectionFpsTextView);
-        mDetectionThread = new DetectionThread(model, detectionSurface, detectionFpsTextView);
+        mDetectionThread = new DetectionThread(detectionSurface, detectionFpsTextView);
         mDetectionThread.initialize();
         mDetectionThread.start();
 
@@ -251,17 +260,21 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
             case R.id.settings:
                 verifyPreferences();
                 Intent intent = new Intent();
-                intent.setClassName(this, "edu.umich.eecs.april.apriltag.SettingsActivity");
+                intent.setClassName(this, "edu.umich.eecs.april.apriltag.activity.SettingsActivity");
                 startActivity(intent);
                 return true;
 
             case R.id.reset:
                 // Reset all shared preferences to default values
+                /*
                 PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
 
                 // Restart the camera preview
                 onPause();
                 onResume();
+*/
+                Intent intent2 = new Intent(this, ListTrackActivity.class);
+                startActivity(intent2);
 
                 return true;
 
@@ -273,6 +286,7 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.

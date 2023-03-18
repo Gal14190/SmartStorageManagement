@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_logo"
@@ -20,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -33,13 +35,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:theme="@style/PreferencesTheme"
             android:label="@string/title_activity_settings">
         </activity>
-        <activity android:name=".ListItemsActivity" />
-        <activity android:name=".ItemManageActivity"/>
-        <activity android:name=".ApriltagDetectorActivity"/>
+        <activity android:name=".activity.ListItemsActivity" />
+        <activity android:name=".activity.ItemManageActivity"/>
+        <activity android:name=".activity.ApriltagDetectorActivity"/>
+        <activity android:name=".activity.ListTrackActivity"/>
+        <activity android:name=".activity.AddItemActivity"/>
     </application>
 
 </manifest>

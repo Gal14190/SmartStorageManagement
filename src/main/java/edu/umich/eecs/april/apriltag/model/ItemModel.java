@@ -1,6 +1,8 @@
-package edu.umich.eecs.april.apriltag;
+package edu.umich.eecs.april.apriltag.model;
 
 public class ItemModel {
+    private String doc;
+
     private int id;
     private String serialNumber;
     private int storageId;
@@ -17,6 +19,14 @@ public class ItemModel {
         this.description = description;
         this.amount = amount;
         this.imageURL = imageURL;
+    }
+
+    public String getDoc() {
+        return doc;
+    }
+
+    public void setDoc(String doc) {
+        this.doc = doc;
     }
 
     public ItemModel() {
