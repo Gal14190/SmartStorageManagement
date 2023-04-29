@@ -272,7 +272,7 @@ public class DetectionThread extends Thread {
                         // update live server
                         if(dataItem.getId() != -1)
                             (new LiveServer()).start();
-                        
+
                     } else if(detection.id >= 500){
                         Model.getPanelItemPopupModel().getItemNameTextView().setText("Storage");
                         Model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);

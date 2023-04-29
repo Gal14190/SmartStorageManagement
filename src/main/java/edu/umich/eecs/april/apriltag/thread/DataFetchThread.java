@@ -40,7 +40,6 @@ public class DataFetchThread extends Thread {
             dbStorage = FirebaseFirestore.getInstance().collection(mDataSet.STORAGE_COLLECTION_STR);
             dbTrack = FirebaseFirestore.getInstance().collection(mDataSet.TRACK_COLLECTION_STR);
             dbItem = FirebaseFirestore.getInstance().collection(mDataSet.ITEM_COLLECTION_STR);
-
         } catch (Exception e) {
             Log.e("Data", e.getMessage());
         }
@@ -149,7 +148,7 @@ public class DataFetchThread extends Thread {
         mDataSet.itemDoc_count++;
         this.mDataSet.getItem().add(item);
 
-        dbItem.document(Integer.toString(mDataSet.getItem().size())).set(item).addOnFailureListener(e ->
+        dbItem.document(Integer.toString(mDataSet.getItem().size() - 1)).set(item).addOnFailureListener(e ->
                 Toast.makeText(Model.getMainContext(), "Fail to add item " + e.getMessage(), Toast.LENGTH_SHORT).show()
         );
     }

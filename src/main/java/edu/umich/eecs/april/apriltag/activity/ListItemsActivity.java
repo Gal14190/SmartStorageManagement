@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -120,7 +121,7 @@ class ItemsAdapter extends ArrayAdapter<ItemModel> {
 
         ItemModel contact = data.get(position);
 
-        new DownloadImageAsync(((ImageView) view.findViewById(R.id.itemImageList))).execute(contact.getImageURL());
+        new DownloadImageAsync(((ImageView) view.findViewById(R.id.itemImageList)), parent.getContext()).execute(contact.getImageURL());
 
         ((TextView) view.findViewById(R.id.itemNameList)).setText(contact.getName());
         ((TextView) view.findViewById(R.id.itemSerialList)).setText(contact.getSerialNumber());

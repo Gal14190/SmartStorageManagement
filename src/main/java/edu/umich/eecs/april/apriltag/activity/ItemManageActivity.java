@@ -39,7 +39,7 @@ public class ItemManageActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.itemSerialNumberManage)).setText(item.getSerialNumber());
         ((TextView) findViewById(R.id.itemDescriptionManage)).setText(item.getDescription());
         ((TextView) findViewById(R.id.itemAmountManage)).setText(Integer.toString(item.getAmount()));
-        new DownloadImageAsync(((ImageView) findViewById(R.id.itemImage))).execute(item.getImageURL());
+        new DownloadImageAsync(((ImageView) findViewById(R.id.itemImage)), this).execute(item.getImageURL());
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("HH:mm dd/MM/yyyy");
