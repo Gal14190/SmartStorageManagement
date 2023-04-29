@@ -7,6 +7,12 @@
         app:showAsAction="ifRoom"
         android:title="@string/settings"/>
 
+    <item
+        android:id="@+id/add"
+        android:icon="@drawable/add_icon"
+        android:title="add"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/reset"
         android:icon="@drawable/ic_restore_white_24dp"
         app:showAsAction="ifRoom"

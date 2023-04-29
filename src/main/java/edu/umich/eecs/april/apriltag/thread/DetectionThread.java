@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import edu.umich.eecs.april.apriltag.helper.LiveServer;
 import edu.umich.eecs.april.apriltag.model.ApriltagDetection;
 import edu.umich.eecs.april.apriltag.ApriltagNative;
 import edu.umich.eecs.april.apriltag.model.ItemModel;
@@ -267,6 +268,11 @@ public class DetectionThread extends Thread {
 
                         Model.setDetected(true);   // is detected
                         Model.setItemIdDetected(detection.id);
+
+                        // update live server
+                        if(dataItem.getId() != -1)
+                            (new LiveServer()).start();
+                        
                     } else if(detection.id >= 500){
                         Model.getPanelItemPopupModel().getItemNameTextView().setText("Storage");
                         Model.getPanelItemPopupModel().getItemNameTextView().setTextColor(Color.WHITE);

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="liveServer_ip">10.0.0.15</string>
+    <string name="liveServer_port">4000</string>
+</resources>

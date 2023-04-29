@@ -256,6 +256,11 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.add:
+                Intent intent3 = new Intent(this, AddItemActivity.class);
+                startActivity(intent3);
+
+                return true;
 
             case R.id.settings:
                 verifyPreferences();
