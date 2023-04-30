@@ -19,7 +19,7 @@ import edu.umich.eecs.april.apriltag.model.Model;
 import edu.umich.eecs.april.apriltag.model.TrackModel;
 
 public class ItemManageActivity extends AppCompatActivity {
-    private final String BUY_URL_WEBSITE = "https://www.google.com/search?q=";
+    private final String BUY_URL_WEBSITE = "`https://www.google.com/search?q=`";
     private ItemModel item;
     private int index;
     private Model model;
@@ -32,9 +32,11 @@ public class ItemManageActivity extends AppCompatActivity {
 
         model = new ViewModelProvider(this).get(Model.class);
 
+        // get the item information
         item = Model.getDataFetch().getItemById(Model.getItemIdDetected());
         index = Model.getDataFetch().getAllItems().indexOf(item);
 
+        // set the text views from item information
         ((TextView) findViewById(R.id.itemNameManage)).setText(item.getName());
         ((TextView) findViewById(R.id.itemSerialNumberManage)).setText(item.getSerialNumber());
         ((TextView) findViewById(R.id.itemDescriptionManage)).setText(item.getDescription());
@@ -47,21 +49,24 @@ public class ItemManageActivity extends AppCompatActivity {
         String dateString = format.format(calendar.getTime()); // Get the formatted date as a string
 
         ((Button) findViewById(R.id.incBtn)).setOnClickListener(view -> {
-            addAmount(1);
+            addAmount(1); // increase
             Model.getDataFetch().addTrack(new TrackModel(item.getId(), Model.getUserName(), dateString, true));
         });
 
         ((Button) findViewById(R.id.decBtn)).setOnClickListener(view -> {
-            addAmount(-1);
+            addAmount(-1); // decrees
             Model.addTrack(new TrackModel(item.getId(), Model.getUserName(), dateString, false));
         });
 
         WebView webView = (WebView) findViewById(R.id.webViewMange);
         webView.getSettings().setJavaScriptEnabled(true); // Enable JavaScript (optional)
-        webView.loadUrl(BUY_URL_WEBSITE + item.getSerialNumber());
-
+        webView.loadUrl(BUY_URL_WEBSITE + item.getSerialNumber()); // set the url address
     }
 
+    /**
+     * Update amount
+     * @param n
+     */
     private void addAmount(int n) {
         ItemModel item = Model.getDataFetch().getAllItems().get(index);
         int amount = item.getAmount() + n;

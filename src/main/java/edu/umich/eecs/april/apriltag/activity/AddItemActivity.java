@@ -26,29 +26,36 @@ import edu.umich.eecs.april.apriltag.model.ItemModel;
 import edu.umich.eecs.april.apriltag.model.Model;
 
 public class AddItemActivity extends AppCompatActivity {
+    // firebase database
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
     private final int REQUEST_CODE_SELECT_IMAGE = 1;
     private String imgUri;
 
+    /**
+     * Add activity creator
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
         setContentView(R.layout.add_item_activity);
 
-        int id = Model.mData.getAllItems().size() - 1;
+        int id = Model.mData.getAllItems().size() - 1; // create new id
 
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
+        // open choose image dialog on click button
         ((Button) findViewById(R.id.itemImageBtn)).setOnClickListener(view -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, REQUEST_CODE_SELECT_IMAGE);
         });
 
+        // add new item into the firebase db by the input on add button
         ((Button) findViewById(R.id.addBtn)).setOnClickListener(view -> {
             String name = ((EditText) findViewById(R.id.itemNameInput)).getText().toString();
             String serialNumber = ((EditText) findViewById(R.id.itemSerialNumberInput)).getText().toString();
@@ -68,15 +75,16 @@ public class AddItemActivity extends AppCompatActivity {
 
 
             if(name.isEmpty() || serialNumber.isEmpty() || description.isEmpty() || imgUri.isEmpty() || amount == 0 || storage == 0) {
-                Toast.makeText(this, "Please insert information", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please insert information", Toast.LENGTH_SHORT).show(); // popup message if the inputs is not ok
             } else {
-                Model.addItem(new ItemModel(id, serialNumber, storage, name, description, amount, imgUri));
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-                finish();
+                Model.addItem(new ItemModel(id, serialNumber, storage, name, description, amount, imgUri)); // add the item
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show(); // popup success message
+                finish(); // close the activity
             }
         });
     }
 
+    /** Request handler */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -87,7 +95,7 @@ public class AddItemActivity extends AppCompatActivity {
         }
     }
 
-    // UploadImage method
+    /** UploadImage method */
     private String uploadImage(Uri filePath)
     {
         String uuid = null;

@@ -5,12 +5,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.URL;
-import java.util.Enumeration;
 
 import edu.umich.eecs.april.apriltag.model.Model;
 
@@ -33,10 +28,15 @@ public class LiveServer extends Thread {
         }
     }
 
+    /**
+     * Update item id method for live server
+     * @param id
+     */
     public void update(int id) {
         String API_URL = String.format("http://%s:%d/%s?%s=%d", ip, PORT, PATH, KEY, id);
 
         try {
+            // backend connection
             java.net.URL url = new URL(API_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -63,22 +63,5 @@ public class LiveServer extends Thread {
         }catch (Exception e) {
             Log.e("LiveServer", e.getMessage());
         }
-    }
-
-    private String getLocalIpAddress() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            Log.e("IP Address", ex.toString());
-        }
-        return null;
     }
 }

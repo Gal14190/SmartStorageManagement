@@ -50,15 +50,18 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
 
     private Model model;
 
+    // views
     private ImageButton detectSpecificItemsBtn;
     private ImageButton detectAllItemsBtn;
 
+    // code request
     private static final int PERMISSIONS_REQUEST_CAMERA = 77;
     private static final int PERMISSION_REQUEST_INTERNET = 1;
     private int has_camera_permissions = 0;
     private int has_internet_permissions = 0;
 
     private void verifyPreferences() {
+        // local storage memory
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         int nthreads = Integer.parseInt(sharedPreferences.getString("nthreads_value", "0"));
@@ -72,10 +75,15 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Main create activity
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        // network connectivity service request
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
@@ -91,13 +99,13 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         // Make the screen stay awake
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Model
+        // Model init
         Model.init();
         Model.setPanelItemPopupModel(new PanelItemPopupModel());
 
         // Mode detection buttons
+        // select detect specific item mode
         detectSpecificItemsBtn = (ImageButton) findViewById(R.id.detectSpecificItems_btn);
-        detectAllItemsBtn = (ImageButton) findViewById(R.id.detectAllItems_btn);
         detectSpecificItemsBtn.setOnClickListener(view -> {
             Model.setModeDetection(Model.mode.SPECIFIC_ITEM);
             modeSelectStyle(Model.mode.SPECIFIC_ITEM);
@@ -105,6 +113,8 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ListItemsActivity.class);
             this.startActivity(intent);
         });
+        // select detect all items mode
+        detectAllItemsBtn = (ImageButton) findViewById(R.id.detectAllItems_btn);
         detectAllItemsBtn.setOnClickListener(view -> {
             Model.setModeDetection(Model.mode.ITEMS);
             modeSelectStyle(Model.mode.ITEMS);
@@ -120,11 +130,12 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
             modeSelectStyle(Model.mode.SPECIFIC_ITEM);
         }
 
+        // bottom panel set click event
         ((LinearLayout) findViewById(R.id.panelPopup)).setOnClickListener(view -> {
-            if(Model.isDetected()) {
+            if(Model.isDetected()) { // open item activity if item id detected
                 Intent intent = new Intent(this, ItemManageActivity.class);
                 this.startActivity(intent);
-            } else {
+            } else {    // open add item activity if item id is not detected
                 Intent intent = new Intent(this, AddItemActivity.class);
                 this.startActivity(intent);
             }
@@ -164,6 +175,9 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         Log.i(TAG, "Finished pause.");
     }
 
+    /**
+     * Stop the detection threads
+     */
     private void stopThreads() {
         if (mCameraPreviewThread != null) {
             mCameraPreviewThread.interrupt();
@@ -242,24 +256,38 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         mCameraPreviewThread.start();
     }
 
+    /**
+     * Set style for text settings - not used
+     * @param textView
+     */
     private void stylizeText(TextView textView) {
         textView.setTextColor(Color.GREEN);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
     }
+
+    /**
+     * Option menu - not used
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
+    /**
+     * Toolbar buttons click event
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
                 Intent intent3 = new Intent(this, AddItemActivity.class);
                 startActivity(intent3);
-
                 return true;
 
             case R.id.settings:
@@ -270,14 +298,6 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
                 return true;
 
             case R.id.reset:
-                // Reset all shared preferences to default values
-                /*
-                PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
-
-                // Restart the camera preview
-                onPause();
-                onResume();
-*/
                 Intent intent2 = new Intent(this, ListTrackActivity.class);
                 startActivity(intent2);
 
@@ -288,6 +308,12 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Request permissions
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -326,6 +352,10 @@ public class ApriltagDetectorActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Set buttons style background
+     * @param modeSelect
+     */
     private void modeSelectStyle(Model.mode modeSelect) {
         switch (modeSelect) {
             case ITEMS:

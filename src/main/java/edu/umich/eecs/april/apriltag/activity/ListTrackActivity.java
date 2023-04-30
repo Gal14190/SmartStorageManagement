@@ -45,7 +45,9 @@ public class ListTrackActivity extends AppCompatActivity {
     }
 }
 
-
+/**
+ * Track item in/out adapter for list view
+ */
 class TrackAdapter extends ArrayAdapter<TrackModel> {
     Context context;
     ArrayList<TrackModel> data;
@@ -65,6 +67,8 @@ class TrackAdapter extends ArrayAdapter<TrackModel> {
         }
 
         TrackModel contact = data.get(position);
+
+        // set text view id, name, serial number, user name, time and operation icon
         ItemModel item = Model.getDataFetch().getItemById(contact.getItemId());
 
         ((TextView) view.findViewById(R.id.itemName)).setText(item.getName());

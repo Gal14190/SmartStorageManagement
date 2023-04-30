@@ -100,7 +100,9 @@ public class ListItemsActivity extends AppCompatActivity {
     }
 }
 
-
+/**
+ * Item adapter for list view
+ */
 class ItemsAdapter extends ArrayAdapter<ItemModel> {
     Context context;
     ArrayList<ItemModel> data;
@@ -121,11 +123,14 @@ class ItemsAdapter extends ArrayAdapter<ItemModel> {
 
         ItemModel contact = data.get(position);
 
+        // download image item from firebase storage
         new DownloadImageAsync(((ImageView) view.findViewById(R.id.itemImageList)), parent.getContext()).execute(contact.getImageURL());
 
+        // set name and serial number text views
         ((TextView) view.findViewById(R.id.itemNameList)).setText(contact.getName());
         ((TextView) view.findViewById(R.id.itemSerialList)).setText(contact.getSerialNumber());
 
+        // push item id into the main activity on click item event
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText userName = (EditText) findViewById(R.id.inputUserName);
         Button nextBtn = (Button) findViewById(R.id.nextButton);
 
+        // get the user name
         nextBtn.setOnClickListener(view -> {
             if (!userName.getText().toString().isEmpty()) {
                 Model.setUserName(userName.getText().toString());
@@ -46,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
         dataFetchThread.start();
     }
 
+    /**
+     * Fetching data waiting dialog show
+     * @param sTitle
+     * @return
+     */
     private AlertDialog waitDialog(String sTitle) {
         AlertDialog.Builder aBuilder = new AlertDialog.Builder(this);
 

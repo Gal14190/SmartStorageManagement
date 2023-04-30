@@ -45,6 +45,9 @@ public class DataFetchThread extends Thread {
         }
     }
 
+    /**
+     * Fetch data from firestore in background
+     */
     @Override
     public void run() {
         mDataSet.getStorage().clear();
